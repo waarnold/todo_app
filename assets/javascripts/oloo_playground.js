@@ -1,7 +1,3 @@
-// really understand how helper works
-// think about setclass.
-// understand when i return a function bound to a context, like getlastid
-
 var app;
 var Todo;
 
