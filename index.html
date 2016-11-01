@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Todo List</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="assets/stylesheets/main.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="assets/javascripts/handlebars-v4.0.5.js"></script>
+    <script src="assets/javascripts/oloo_playground.js"></script>
+  </head>
+  <body>
+    <main>
+      <script id="primary" type='text/x-handlebars'>
+        <div id="content">
+          <div id="hamburger"></div>
+          <h1>{{activeList}}<span class="total tasks active">{{activeCount}}</span></h1>
+          <div id="new">Add new todo</div>
+          <table>
+            <tbody>
+              {{#each filteredCollection}}
+                {{> todo}}
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
+        <nav>
+          <div class="all_todos">
+            <ul>
+              <li class='active' data-title="All Todos">
+                <h2>
+                  All Todos
+                  <span class="total tasks">{{totalCount}}</span>
+                </h2>
+              </li>
+              {{#each listNames}}
+                {{> navItem}}
+              {{/each}}
+            </ul>
+          </div>
+          <div class="complete">
+            <ul>
+              <li data-title="Completed">
+                <h2>
+                  Completed
+                  <span class="tasks">{{completedCount}}</span>
+                </h2>
+              </li>
+              {{#each listNames}}
+                {{#ifHasComplete .}}
+                  {{> completeNavItem}}
+                {{/ifHasComplete}}
+              {{/each}}
+            </ul>
+          </div>
+        </nav>
+      </script>
+
+      <script id="todo" type='text/x-handlebars'>
+        <tr data-id="{{id}}">
+          <td
+          {{#if completed}}
+          class='complete'
+          {{else}}
+          class='check'
+          {{/if}}>
+          <span>{{title}} - {{due_date}}</span>
+          </td>
+          <td class="trash"></td>
+        </tr>
+      </script>
+
+      <script id="navItem" type="text/x-handlebars">
+          <li data-title="{{.}}">
+            {{.}}
+            <span class="tasks">{{counter}}</span>
+          </li>
+      </script>
+
+      <script id="completeNavItem" type="text/x-handlebars">
+          <li data-title="{{.}}">
+            {{.}}
+            <span class="tasks">{{completeCounter}}</span>
+          </li>
+      </script>
+
+      <script id="modal" type="text/x-handlebars">
+        <div class="modal">
+          <form action="" data-editing="{{id}}" method="post">
+            <fieldset>
+              <dl>
+                <dt>
+                  <label for="title">Title</label>
+                </dt><!--
+                --><dd>
+                  <input type="text" name="title" id="title" placeholder="Item 1" value="{{title}}">
+                </dd>
+              </dl>
+              <dl>
+                <dt>
+                  <label for="due_date">Due Date</label>
+                </dt><!--
+                --><dd>
+                  <select name="day" id="due_date">
+                    {{#select day}}
+                    <option value="" selected>Day</option>
+                    <option value="01">1</option>
+                    <option value="02">2</option>
+                    <option value="03">3</option>
+                    <option value="04">4</option>
+                    <option value="05">5</option>
+                    <option value="06">6</option>
+                    <option value="07">7</option>
+                    <option value="08">8</option>
+                    <option value="09">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                    <option value="19">19</option>
+                    <option value="20">20</option>
+                    <option value="21">21</option>
+                    <option value="22">22</option>
+                    <option value="23">23</option>
+                    <option value="24">24</option>
+                    <option value="25">25</option>
+                    <option value="26">26</option>
+                    <option value="27">27</option>
+                    <option value="28">28</option>
+                    <option value="29">29</option>
+                    <option value="30">30</option>
+                    <option value="31">31</option>
+                    {{/select}}
+                  </select> /
+                  <select name="month" id="month">
+                    {{#select month}}
+                    <option value="" selected>Month</option>
+                    <option value="01">January</option>
+                    <option value="02">February</option>
+                    <option value="03">March</option>
+                    <option value="04">April</option>
+                    <option value="05">May</option>
+                    <option value="06">June</option>
+                    <option value="07">July</option>
+                    <option value="08">August</option>
+                    <option value="09">September</option>
+                    <option value="10">October</option>
+                    <option value="11">November</option>
+                    <option value="12">December</option>
+                    {{/select}}
+                  </select> /
+                  <select name="year" id="year">
+                    {{#select year}}
+                    <option value="" selected>Year</option>
+                    <option value="16">2016</option>
+                    <option value="17">2017</option>
+                    <option value="18">2018</option>
+                    <option value="19">2019</option>
+                    <option value="20">2020</option>
+                    <option value="21">2021</option>
+                    <option value="22">2022</option>
+                    <option value="23">2023</option>
+                    <option value="24">2024</option>
+                    <option value="25">2025</option>
+                    <option value="26">2026</option>
+                    {{/select}}
+                  </select>
+                </dd>
+              </dl>
+              <dl>
+                <dt>
+                  <label for="description">Description</label>
+                </dt><!--
+                --><dd>
+                  <textarea name="description" id="description" rows="8" cols="50">{{description}}</textarea>
+                </dd>
+              </dl>
+              <input id="save" type="submit" value="Save"><!--
+              --><button id="complete">Mark As Complete</button>
+            </fieldset>
+          </form>
+        </div>
+        <div class='modal_layer'></div>
+      </script>
+
+    </main>
+  </body>
+</html>
